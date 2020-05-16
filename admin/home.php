@@ -1,5 +1,7 @@
 <?php
-include('lib/session.php');
+include('./lib/session.php');
+include('./lib/connectar.php');
+include('./lib/dates.php');
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -40,7 +42,19 @@ include('lib/session.php');
 	.btn-file {color: #333;background-color: #fff;border-color: #ccc;}
 	.btn-file:hover {color: #333;background-color: #e6e6e6;border-color: #adadad;}
 	.btn-file.active.focus, .btn-file.active:focus, .btn-file.active:hover, .btn-file:active.focus, .btn-file:active:focus, .btn-file:active:hover, .open>.dropdown-toggle.btn-file.focus, .open>.dropdown-toggle.btn-file:focus, .open>.dropdown-toggle.btn-file:hover
-	{color: #333;background-color: #e6e6e6;border-color: grey;}</style>
+	{color: #333;background-color: #e6e6e6;border-color: grey;}
+    
+    .topright {
+    position: absolute;
+    left: 235px;
+    color: white;
+    z-index: 1;
+    opacity: 100;
+    }
+    .inner {
+    display: inline-block;
+    }
+    </style>
 	   
 </head>
 
@@ -69,9 +83,9 @@ include('lib/session.php');
                     <i class="fa fa-plus fa-fw" style="color:#8c8c8c !important"></i>  <i class="fa fa-caret-down" style="color:#8c8c8c !important"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-options">
-                    <li><a href="?sec=<?php echo $_GET['sec'];?>&sub=new"><i class="fa fa-plus-circle fa-fw"></i> New post</a>
+                    <li><a href="?sec=post&sub=new"><i class="fa fa-plus-circle fa-fw"></i> New post</a>
                     </li>
-                    <li><a href="?sec=unsplash&sub=new"><i class="fa fa-plus-circle fa-fw"></i> New Unsplash</a>
+                    <li><a id='clean' href="?sec=unsplash&sub=new" ><i class="fa fa-plus-circle fa-fw"></i> New Unsplash</a>
                     </li>                    
                     <li><a href="?sec=<?php echo $_GET['sec'];?>&sub=lst"><i class="fa fa-list-alt fa-fw"></i> Listed</a>
                     </li>
@@ -150,6 +164,7 @@ include('lib/session.php');
 	<div id="page-wrapper">
 
 		<?php
+
 		//SCRIPT QUE CARREGA LA PÀGINA
 
 		if(isset($_GET['sec'])){
@@ -183,8 +198,24 @@ include('lib/session.php');
     <script src="dist/js/sb-admin-2.js"></script>
 	                           
 	<!-- Bootstrap FileInput -->
-    <script src="dist/js/fileinput.min.js"></script>					  
-				
+    <script src="dist/js/fileinput.min.js"></script>
+    
+    <!-- Vue.js -->
+    <script  src="./Vue/lib/axios/vue.js"></script>
+    <script  src="./Vue/lib/axios/vue-resource.min.js"></script> 
+    <script  src="./Vue/lib/axios/axios.min.js"></script>   
+    <script  src="./Vue/js/content.js"></script>
+    <!-- <script  src="./Vue/js/bundle.js"></script> -->
+
+    <script>
+    $(document).ready(function() {
+        $("#clean").click(function() {
+            //Do stuff when clicked
+            window.localStorage.removeItem('rows');
+        });
+    });
+    </script>
+
 </body>
 
 </html>

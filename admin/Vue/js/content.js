@@ -1,30 +1,41 @@
+
 //----------------------------------------------------
 // News Feed
 //----------------------------------------------------
 
-var articleSource = '';
-var lastSource = JSON.parse(window.localStorage.getItem('source'))
-
-if (lastSource == null || typeof lastSource == 'undefined') {
-	articleSource = 'random';
-}else{
-	var articleSource = lastSource;
+var check = []
+if (typeof localStorage["rows"] != "undefined" && localStorage["rows"] != "undefined") {
+	var check = JSON.parse(window.localStorage.getItem('rows'));
+	localStorage.setItem('rows', JSON.stringify(check));
 }
 
-console.log(articleSource)
-
 function getDefault() {
-	
+
+	var check = [];
 	var articleSource = '';
-	var lastSource = JSON.parse(window.localStorage.getItem('source'))
-	
-	if (lastSource == null || typeof lastSource == 'undefined') {
-		articleSource = 'random';
-	}else{
+	var lastSource = '';
+
+	var lastSource = JSON.parse(localStorage.getItem('source'));
+
+	if (localStorage.getItem('source')) {
 		var articleSource = lastSource;
+	}else{
+		articleSource = 'Random';
+		localStorage.setItem("source", JSON.stringify(articleSource));
 	}
 
-	console.log(articleSource)
+	console.log(lastSource);
+
+////////////////////////////////////////////////////////////////////////////
+
+	$(document).ready(function() {
+		$(window).keydown(function(event){
+		  if(event.keyCode == 13) {
+			event.preventDefault();
+			return false;
+		  }
+		});
+	});
 
 //----------------------------------------------------
 // Vue Content
@@ -35,158 +46,321 @@ function getDefault() {
 	new Vue({
 	  el: '#app',
 	  data: {
-		search: null,
-		arrayllista: [],
+		search: '',
 		rows: [],
-		check2: [],
-		title: null,
+		list: [],
+		arrayList: [],
+		arrayList2: [],
 	  },
 	  props: {
 		selected: Boolean,
 	  },
-	  
 	  methods: {
-        addRow(values){
+		addRow(values){
+			this.selected = true
 
 			var check = []
-			check = JSON.parse(window.localStorage.getItem('rows'))
-	
-			if (check == null || typeof check == 'undefined') {
-				var newLlistat = {}
-				newLlistat.description = values.description
-				newLlistat.city = values.city
-				newLlistat.country = values.country
-				newLlistat.imageown = values.imageown
-				newLlistat.link = values.link
-				newLlistat.imageurl = values.imageurl	
-				this.rows.push(newLlistat)
-				this.selected = true	
-			}else {
-				var newLlistat = {}
-				newLlistat.description = values.description
-				newLlistat.city = values.city
-				newLlistat.country = values.country
-				newLlistat.imageown = values.imageown
-				newLlistat.link = values.link
-				newLlistat.imageurl = values.imageurl	
-				this.rows.push(newLlistat)
-
-				check.forEach((check) => {
-					var newLlistat = {}
-					newLlistat.description = check.description
-					newLlistat.city = check.city
-					newLlistat.country = check.country
-					newLlistat.imageown = check.imageown
-					newLlistat.link = check.link
-					newLlistat.imageurl = check.imageurl
-					this.rows.push(newLlistat)
-				})
+			if (typeof localStorage["rows"] != "undefined" && localStorage["rows"] != "undefined") {
+				var check = JSON.parse(window.localStorage.getItem('rows'));
 			}
+			SaveRaw(values,check);
 
-			var uniqueArray = removeDuplicates(this.rows, "description")
-				
-			function removeDuplicates(originalArray, prop) {
-				var newArray = [];
-				var lookupObject  = {};
-		
-				for(var i in originalArray) {
-				lookupObject[originalArray[i][prop]] = originalArray[i];
-				}
-		
-				for(i in lookupObject) {
-					newArray.push(lookupObject[i]);
-				}
-				return newArray;
-			}
+			function SaveRaw(params,lastRaw){
+				var newList = {}
+				newList.description = params.description,
+				newList.city = params.city,
+				newList.country = params.country,
+				newList.imageown = params.imageown,
+				newList.link = params.link,
+				newList.imageurl = params.imageurl	
+				lastRaw.push(newList)
 
-				window.localStorage.setItem('rows', JSON.stringify(uniqueArray));
-				console.log(JSON.parse(window.localStorage.getItem('rows')))	
-				this.selected = true;
+				localStorage.setItem('rows', JSON.stringify(lastRaw));
+				console.log(lastRaw);
 
-				var check2 = []
-				check2 = JSON.parse(window.localStorage.getItem('rows'))
+				//important!!!
 
-				axios({
-					url: 'home.php?sec=unsplash&sub=new',
-					method: 'post',
-					data: check2
-				})
-					.then(response => (this.check2 = response.config['data']))
-					.then(function (check2) {
-						// your action after success
-						console.log(check2);
-					})
-					.catch(function (error) {
-						// your action on error success
-						console.log(error);
+				var counter = 0;
+				var form = document.getElementById('theform'+ counter);
+
+				while ( form  )
+				{
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(0);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
 					});
 
-        },
-        removeRow(index,rows){
-		   this.rows.splice(index,1); // why is this removing only the last row?
-		   if (rows < 1) this.selected = false
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(1);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});		
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(2);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(3);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(4);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(5);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(6);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(7);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(8);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(9);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(10);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(11);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});						
+				
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(12);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
 
-		   const check = JSON.stringify(this.rows)
-		   window.localStorage.setItem('rows', check);
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(13);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(14);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(15);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(16);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(17);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});		
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(18);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(19);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(20);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});						
+
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(21);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(22);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});		
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(23);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form.addEventListener('submit', function(){
+						var showField = document.getElementById(24);
+						var show = lastRaw;
+						showField.value = JSON.stringify(show);
+					});	
+					
+					form  = document.getElementById( "theform" + ( ++counter ));
+				}
+			}
+
+		},	
+
+        removeRow(index){
+			if (localStorage.getItem("rows")) {
+				if (this.rows.length > 1){
+					this.rows.splice(index,1); // why is this removing only the last row?
+					// if (this.rows < 1) this.selected = false
+					localStorage.setItem('rows', JSON.stringify(this.rows));
+				}
+			}
 		},
-        addSearch(){
-			var articleSource = this.search
-			localStorage.setItem('source', articleSource)
 
-			this.title = document.getElementById("title").value    // set the value to this input
-
-			window.location.reload();
-			console.log(this.title);
+		getData() {
 
 
 
-		 },		
-	},
+			var request = new XMLHttpRequest();
+			request.onreadystatechange = function() {
+				if (request.readyState === 4 && request.status === 200) {
+					var json = JSON.parse(request.responseText);
+					console.log('Your country is ' + json['location']['country']['name']);
+				}
+			};
+			request.open('GET', 'https://api.ipregistry.co/?key=tryout&pretty=true', true);
+			request.send(null);
+
+
 	
-	  	computed: {
-		pageUrl() {
-		  return 'home.php?sec=unsplash&sub=new?'+check2;
+		 },
+
+        addSearch(){
+			if(!this.search) {
+				this.search = 'Random';
+				localStorage.setItem("source", JSON.stringify(this.search));
+			  }else{
+				var articleSource = this.search;
+				localStorage.setItem("source", JSON.stringify(articleSource));
+			}
+			window.location.reload();
+		}
+
+	  },
+	  computed: {
+			pageUrl() {
+			return './home.php?sec=unsplash&sub=new?';
+			}
+	  },
+	  created: function(){
+		console.log('Component has been created!');
+
+		if (typeof localStorage["rows"] != "undefined" && localStorage["rows"] != "undefined") {
+			arrayList2 = JSON.parse(window.localStorage.getItem('rows'));
+			console.log(arrayList2);
+		}else{
+			arrayList2 = []
+			arrayList2.description = "null",
+			arrayList2.city = "null",
+			arrayList2.country = "null",
+			arrayList2.imageown = "null",
+			arrayList2.link = "null",
+			arrayList2.imageurl = "null"
+			localStorage.setItem('rows', JSON.stringify(arrayList2));
+			arrayList2 = JSON.parse(window.localStorage.getItem('rows'));
+			console.log(arrayList2);
+
 		}
 	  },
 	  mounted () {
-		let count = 0;
 
-		while (count < 25){  
-		randomNumber = Math.floor(Math.random() * 1000);
-		axios
-		  .get('https://api.unsplash.com/photos/random?page='+randomNumber+'&query='+ articleSource +'&client_id=542a52862af1d927653c8cea3899842958fcb6a9256496b58b7ac0be3eb3220b')
-		  .then(response => {
+
+
+
+
+		this.getData()
 		
-			var llistat = {}
-				llistat.description = response.data.description
-				llistat.city = response.data.location.city
-				llistat.country = response.data.location.country
-				llistat.imageown = response.data.user.name
-				llistat.link = response.data.user.links.html
-				llistat.imageurl = response.data.urls.full
-				this.arrayllista.push(llistat)
-			})  
-		count++;
+
 		}
-	  }
-	})   
-
-	$('#form-id').on('submit', function(){
-		var $this = $("#form-id input");
-		var articleSource = $this.val();
-		localStorage.setItem('source', articleSource);
-	});	
-
+	})  
 }
 
-// Load Reuters on page load
+// 		let count = 0;
+// 			while (count < 25){  
+// 				randomNumber = Math.floor(Math.random() * 1000);
+// 				//.get('https://api.unsplash.com/photos/random?page='+randomNumber+'&query='+ articleSource +'&client_id=542a52862af1d927653c8cea3899842958fcb6a9256496b58b7ac0be3eb3220b')
+// 				axios.get('http://localhost:8080/Json/db.json')
+				
+// 				.then(axios.spread(function (list, list) {
+// 					var list = {}
+// 						list.description = response.data.description
+// 						list.city = response.data.location.city
+// 						list.country = response.data.location.country
+// 						list.imageown = response.data.user.name
+// 						list.link = response.data.user.links.html
+// 						list.imageurl = response.data.urls.full
+// 						this.arrayList.push(list)
+// 					})) 
+// 				count++;
+// 			}
+// 		}
+
+
+// 	})  
+// }
+
+
+
+
+
+
+// window.onload = make_requests_handler();
+
+// function get() {
+// 	alert("loading....")
+// 	var form = document.getElementById('theform0');
+// 	var showField = document.getElementById(0);
+// 	var show = arrayList;
+// 	showField.value = JSON.stringify(show);
+// 	form.submit();
+// }
+
+
 getDefault();
 
 //window.localStorage.removeItem('rows');
 
-$('#search').on('click', function(){
-	var $this = $("#form-id input");
-	var articleSource = $this.val();
-	localStorage.setItem('source', articleSource);
-	window.location.href="home.php?sec=unsplash&sub=new"
-});

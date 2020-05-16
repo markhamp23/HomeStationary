@@ -3,6 +3,13 @@ include('lib/login.php'); // Includes Login Script
 
 if(isset($_SESSION['username'])){
     header("location: home.php");
+    header("Access-Control-Allow-Origin: *");
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Methods: POST");
+    header("Access-Control-Allow-Methods: GET");
+    header("Access-Control-Max-Age: 3600");
+    header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+    Header ("set Access-Control-Allow-Origin '*'");
 }
 ?>
 <!DOCTYPE html>
@@ -108,6 +115,9 @@ if(isset($_SESSION['username'])){
 
     <!-- jQuery JavaScript -->
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script> 
+    <script src="../lib/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../lib/jquery/3.3.1/jquery.js"></script>    
 
     <!-- Bootstrap Core JavaScript -->
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>

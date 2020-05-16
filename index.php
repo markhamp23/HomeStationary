@@ -24,7 +24,7 @@ include_once('admin/lib/analyticstracking.php');
 include_once('admin/lib/GoogleTagManager.php');
 ?>
 
-<body>
+<body onload="jsfunction();">
 
 <!-----------------------Header---------------------------------------------------------->
 
@@ -68,7 +68,6 @@ else{
 }
 
 require_once ('./content/' . $pagina . '.php');
-
 ?>
 
 <!-----------------------End Carrega pag---------------------------------------------------------->
@@ -158,7 +157,6 @@ require_once ('./content/' . $pagina . '.php');
 </div>
 <?php } ?>
 </body>
-
 	<script src="./classic/ajax/libs/jquery/2.2.4/jquery.js"></script>
 	<!-- load Galleria -->
 	<script src="./classic/galleria.min.js"></script>
@@ -168,6 +166,7 @@ require_once ('./content/' . $pagina . '.php');
             Galleria.run('#galleria').galleria({ debug: false });
         });
     </script>	
+	
 	<script>	
 	$('#galleria').galleria({
 	  dataConfig: function(img) {
